@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.20)
 project(HNVCore VERSION 0.1)
 set (CMAKE_CXX_STANDARD 20)
 
-file(GLOB SRC_FILES CONFIGURE_DEPENDS "src/*.h" "src/*.cpp")
+file(GLOB SRC_FILES CONFIGURE_DEPENDS "src/*.h" "src/*.cpp" "lib/glad/src/glad.c") #ta mere la pute glad
 
 add_executable(HNVCore ${SRC_FILES})
 
