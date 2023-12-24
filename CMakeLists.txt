@@ -15,6 +15,8 @@ target_include_directories(HNVCore
     PUBLIC "${CMAKE_SOURCE_DIR}/lib/glm" 
     PUBLIC "${CMAKE_SOURCE_DIR}/lib/glfw/include"   
     PUBLIC "${CMAKE_SOURCE_DIR}/lib/glad/include"
+    PUBLIC "${CMAKE_SOURCE_DIR}/lib/glut/include"
 )
 
 target_link_libraries(HNVCore "${CMAKE_SOURCE_DIR}/lib/glfw/libglfw3dll.a")
+target_link_libraries(HNVCore "${CMAKE_SOURCE_DIR}/lib/glut/lib/libglut32.a")
