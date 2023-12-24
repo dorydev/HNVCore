@@ -23,13 +23,13 @@ static void key_callback(GLFWwindow* window, int key, int scancode, int action, 
 
 int main(void) 
 {
-    std::cout << "Hello World!" << std::endl;
+    std::cout << "Window creation has started...." << std::endl;
 
     if(!glfwInit()) {
         std::cout << "oooh miiiiiince" << std::endl;
     }
 
-    GLFWwindow* window = glfwCreateWindow(500, 500, "Yolo", nullptr, nullptr);
+    GLFWwindow* window = glfwCreateWindow(SCR_WIDTH, SCR_HEIGHT, "Yolo", nullptr, nullptr);
     glfwMakeContextCurrent( window );
 
     if (window == NULL)
@@ -39,10 +39,25 @@ int main(void)
         return -1;
     }
 
+    
     if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
     {
         std::cout << "Failed to initialize GLAD" << std::endl;
         return -1;
     }
+
+    while (!glfwWindowShouldClose(window))
+    {
+        /* Render here */
+        glClear(GL_COLOR_BUFFER_BIT);
+
+        /* Swap front and back buffers */
+        glfwSwapBuffers(window);
+
+        /* Poll for and process events */
+        glfwPollEvents();
+    }
+
+    glfwTerminate();
     return 0;
 }
