@@ -3,10 +3,11 @@
 #include <glfw3.h>
 #include <glm.hpp>
 
-
+//callback signatures
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
-void processInput(GLFWwindow *window);
+void processInput(GLFWwindow* window);
 
+//GLOBAL variables
 const unsigned int SCR_WIDTH = 1080;
 const unsigned int SCR_HEIGHT = 720;
 
@@ -26,7 +27,7 @@ int mainWindow(void)
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
     //create window
-    GLFWwindow* window = glfwCreateWindow(SCR_WIDTH, SCR_HEIGHT, "Yolo", nullptr, nullptr);
+    GLFWwindow* window = glfwCreateWindow(SCR_WIDTH, SCR_HEIGHT, "HNVCore", nullptr, nullptr);
     glfwMakeContextCurrent( window );
 
     // check if window
@@ -53,6 +54,10 @@ int mainWindow(void)
         //update time
         dt = glfwGetTime() - lastframe;
         lastframe += dt;
+
+        glfwWaitEventsTimeout(0.001);
+        //processInput();
+
 
         /* Render here */
         glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
