@@ -20,7 +20,6 @@
 
 // include paths
 #include "Core/main_window.cpp"
-#include "Rendering/shaders.cpp"
 
 
 int main(void) 

@@ -3,6 +3,14 @@
 #include <glfw3.h>
 #include <glm.hpp>
 
+//external paths
+#include "shaders.cpp"
+
+//other libs
+#include <string>
+#include <vector>
+#include <stack>
+
 //callback signatures
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 void processInput(GLFWwindow* window);
@@ -47,8 +55,29 @@ int mainWindow(void)
     
     double dt = 0.0;
     double lastframe = 0.0;
-    // Render loop
 
+    //shaders
+    /*std::string vertexShader = 
+    "version 330 Core"
+    "\n"
+    "layout(location=0) in vec2 position;"
+    "void main()\n"
+    "{\n"
+    "   gl_Position = vec4(position.xy)\n"
+    "}\n";
+    std::string fragmentShader = 
+    "version 330 Core"
+    "\n"
+    "layout(location=0) in vec4 color;"
+    "void main()\n"
+    "{\n"
+    "   color = vec4(1.0, 0.0, 0.0, 1.0)\n"
+    "}\n";
+
+    unsigned int shaders = createShaders(vertexShader, fragmentShader);
+    glUseProgram(shaders);*/
+
+    // Render loop
     while (!glfwWindowShouldClose(window))
     {
         //update time
