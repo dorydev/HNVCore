@@ -29,7 +29,7 @@ int main(void)
 
     //test vec 
 
-    glm::vec4 vec(1.0f, 1.0f, 1.0f, 1.0f);
+    /*glm::vec4 vec(1.0f, 1.0f, 1.0f, 1.0f);
     glm::mat4 trans = glm::mat4(1.0f);
     trans = glm::translate(trans, glm::vec3(1.0f, 1.0f, 1.0f)); //translation
     trans = glm::rotate(trans, glm::radians(90.0f), glm::vec3(0.0, 0.0, 1.0)); //rotation
@@ -37,7 +37,7 @@ int main(void)
 
     vec = trans * vec;
 
-    std::cout << vec.x << ' ' << vec.y << ' ' << vec.x << std::endl;
+    std::cout << vec.x << ' ' << vec.y << ' ' << vec.x << std::endl;*/
 
     //--------------------------------------------------------------
 

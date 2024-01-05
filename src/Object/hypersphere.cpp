@@ -15,14 +15,10 @@
 #include <stack>
 
 //Include path
-#include "hypersphère.h"
+#include "hypersphere.h"
 
-//Global variables
 
-const int MIN_SECTOR_COUNT = 3;
-const int MIN_STACK_COUNT  = 2;
-
-void Sphere::printSelf() const
+/*void Sphere::printSelf() const
 {
     std::cout << "===== Sphere =====\n"
               << "        Radius: " << radius << "\n"
@@ -35,4 +31,4 @@ void Sphere::printSelf() const
               << "  Vertex Count: " << getVertexCount() << "\n"
               << "  Normal Count: " << getNormalCount() << "\n"
               << "TexCoord Count: " << getTexCoordCount() << std::endl;
-}
+}*/

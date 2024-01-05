@@ -4,7 +4,7 @@
 #include <glm.hpp>
 
 //external paths
-#include "shaders.cpp"
+#include "../include/hypersphere.h"
 
 //other libs
 #include <string>
@@ -55,27 +55,6 @@ int mainWindow(void)
     
     double dt = 0.0;
     double lastframe = 0.0;
-
-    //shaders
-    /*std::string vertexShader = 
-    "version 330 Core"
-    "\n"
-    "layout(location=0) in vec2 position;"
-    "void main()\n"
-    "{\n"
-    "   gl_Position = vec4(position.xy)\n"
-    "}\n";
-    std::string fragmentShader = 
-    "version 330 Core"
-    "\n"
-    "layout(location=0) in vec4 color;"
-    "void main()\n"
-    "{\n"
-    "   color = vec4(1.0, 0.0, 0.0, 1.0)\n"
-    "}\n";
-
-    unsigned int shaders = createShaders(vertexShader, fragmentShader);
-    glUseProgram(shaders);*/
 
     // Render loop
     while (!glfwWindowShouldClose(window))
