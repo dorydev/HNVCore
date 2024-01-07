@@ -2,8 +2,10 @@
 #include <glad/glad.h>
 #include <glfw3.h>
 #include <glm.hpp>
+#include <math.h>
 
 //external paths
+//#include "../Object/sphere.cpp"
 
 //other libs
 #include <string>
@@ -17,6 +19,9 @@ void processInput(GLFWwindow* window);
 //GLOBAL variables
 const unsigned int SCR_WIDTH = 1080;
 const unsigned int SCR_HEIGHT = 720;
+
+const float steps = 10;
+const float angle = 3.1415926 * 2.f /steps;
 
 
 int mainWindow(void) 
@@ -55,59 +60,56 @@ int mainWindow(void)
     double dt = 0.0;
     double lastframe = 0.0;
 
-    GLuint VertexArrayID; 
-    glGenVertexArrays(1, &VertexArrayID); 
-    glBindVertexArray(VertexArrayID);
+///////////////////////////////////////////////////////////
+// Render loop
+///////////////////////////////////////////////////////////
+
+    //update time
+    dt = glfwGetTime() - lastframe;
+    lastframe += dt;
+
+    glfwWaitEventsTimeout(0.001);
+    //processInput();
+    glfwSetInputMode(window, GLFW_STICKY_KEYS, GL_TRUE);    
+
+    /* Render here */
+    glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+
+
+    GLuint VertexArrayID;
+	glGenVertexArrays(1, &VertexArrayID);
+	glBindVertexArray(VertexArrayID);
 
     static const GLfloat g_vertex_buffer_data[] = { 
-        -1.0f, -1.0f, 0.0f, 
-        1.0f, -1.0f, 0.0f, 
-        0.0f,  1.0f, 0.0f, 
-    };
+        -1.0f, -1.0f, 0.0f,
+        1.0f, -1.0f, 0.0f,
+        0.0f,  1.0f, 0.0f,
+	};
 
-    // Ceci identifiera notre tampon de sommets
-    GLuint vertexbuffer; 
-    
-    // Génère un tampon et place l'identifiant dans 'vertexbuffer'
-    glGenBuffers(1, &vertexbuffer); 
-    
-    // Les commandes suivantes vont parler de notre tampon 'vertexbuffer'
-    glBindBuffer(GL_ARRAY_BUFFER, vertexbuffer); 
-    
-    // Fournit les sommets à OpenGL.
-    glBufferData(GL_ARRAY_BUFFER, sizeof(g_vertex_buffer_data), g_vertex_buffer_data, GL_STATIC_DRAW);
-
-    // Render loop
-    while (!glfwWindowShouldClose(window))
-    {
-        //update time
-        dt = glfwGetTime() - lastframe;
-        lastframe += dt;
-
-        glfwWaitEventsTimeout(0.001);
+    GLuint vertexbuffer;
+	glGenBuffers(1, &vertexbuffer);
+	glBindBuffer(GL_ARRAY_BUFFER, vertexbuffer);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(g_vertex_buffer_data), g_vertex_buffer_data, GL_STATIC_DRAW);
 
 
-        /* Render here */
-        glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
-        
+    do {
+        //clear the screen
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-        // premier tampon d'attributs : les sommets
-        glEnableVertexAttribArray(0); 
-        glBindBuffer(GL_ARRAY_BUFFER, vertexbuffer); 
-        glVertexAttribPointer( 
-            0,                  // attribut 0. Aucune raison particulière pour 0, mais cela doit correspondre au « layout » dans le shader 
-            3,                  // taille
-            GL_FLOAT,           // type 
-            GL_FALSE,           // normalisé ? 
-            0,                  // nombre d'octets séparant deux sommets dans le tampon
-            (void*)0            // décalage du tableau de tampon
-        ); 
-        
-        // Dessine le triangle ! 
-        glDrawArrays(GL_TRIANGLES, 0, 3); // Démarre à partir du sommet 0; 3 sommets au total -> 1 triangle 
-        
+        // first attribute to buffer: arrays
+        glVertexAttribPointer(
+            0,          // attribute 0
+            3,          // size
+            GL_FLOAT,   // type
+            GL_FALSE,   // normalized
+            0,          // stride
+            (void*)0    // array buffer offset
+        );
+
+        //triangle draw
+        glDrawArrays(GL_TRIANGLES, 0, 3);
         glDisableVertexAttribArray(0);
+
 
 
         /* Swap front and back buffers */
@@ -115,6 +117,14 @@ int mainWindow(void)
         /* Poll for and process events */
         glfwPollEvents();
     }
+    while( glfwGetKey(window, GLFW_KEY_ESCAPE ) != GLFW_PRESS &&
+	glfwWindowShouldClose(window) == 0 );
+
+
+    //clean VBO
+    glDeleteBuffers(1, &vertexbuffer);
+	glDeleteVertexArrays(1, &VertexArrayID);
+	//glDeleteProgram(programID);
 
     glfwSwapInterval(1);
     //glfwSetInputMode();
@@ -124,6 +134,9 @@ int mainWindow(void)
 
     return 0;
 }
+
+
+//Other func
 
 void processInput(GLFWwindow *window)
 {
