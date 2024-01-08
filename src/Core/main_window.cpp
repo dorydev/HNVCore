@@ -18,101 +18,10 @@ void processInput(GLFWwindow* window);
 const unsigned int SCR_WIDTH = 1080;
 const unsigned int SCR_HEIGHT = 720;
 
-//shaders
+#include "shader.cpp"
 
-bool loadShaders(GLuint &program)
-{
-	char infoLog[512];
-	GLuint success;
 
-	//load shaders from file:
-
-	std::string temp = "";
-	std::string src = "";
-
-	std::ifstream in_file;
-
-	//vertex
-	in_file.open("Ressources_files/vertex.glsl");
-
-	if (in_file.is_open())
-	{
-		while (std::getline(in_file, temp))
-		{
-			src += temp + "\n";
-		}
-	} else {
-		std::cout << "(-) Failed to load Shaders::COULD_NOT_OPEN_VERTEX_FILE" << "\n" << std::endl;
-	}
-
-	in_file.close();
-
-	GLuint vertexShader = glCreateShader(GL_VERTEX_SHADER);
-
-	const GLchar* vertexSrc = src.c_str();
-	glShaderSource(vertexShader, 1, &vertexSrc, NULL);
-	glCompileShader(vertexShader);
-	glGetShaderiv(vertexShader, GL_COMPILE_STATUS, &success);
-
-	if (!success)
-	{
-		glGetShaderInfoLog(vertexShader, 512, NULL, infoLog);
-		std::cout << "(-) Failed to load Shaders::COULD_NOT_COMPILE_VERTEX_SHADERS" << "\n" << std::endl;
-		std::cout << infoLog << "\n" << std::endl;
-	}
-
-	temp = "";
-	src = "";
-
-	//fragment
-
-	in_file.open("Ressources_files/fragment.glsl");
-
-	if (in_file.is_open())
-	{
-		while (std::getline(in_file, temp))
-		{
-			src += temp + "\n";
-		}
-	} else {
-		std::cout << "(-) Failed to load Shaders::COULD_NOT_OPEN_FRAGMENT_FILE" << "\n" << std::endl;
-	}
-
-	in_file.close();
-
-	GLuint fragmentShader = glCreateShader(GL_VERTEX_SHADER);
-
-	const GLchar* fragmentSrc = src.c_str();
-	glShaderSource(fragmentShader, 1, &vertexSrc, NULL);
-	glCompileShader(fragmentShader);
-	glGetShaderiv(fragmentShader, GL_COMPILE_STATUS, &success);
-
-	if (!success)
-	{
-		glGetShaderInfoLog(fragmentShader, 512, NULL, infoLog);
-		std::cout << "(-) Failed to load Shaders::COULD_NOT_COMPILE_FRAGMENT_SHADERS" << "\n" << std::endl;
-		std::cout << infoLog << "\n" << std::endl;
-	}
-
-	temp = "";
-	src = "";
-
-	//program
-	program = glCreateProgram();
-
-	glAttachShader(program, vertexShader);
-	glAttachShader(program, fragmentShader);
-
-	glLinkProgram(program);
-
-	//end
-
-	glDeleteShader(vertexShader);
-	glDeleteShader(fragmentShader);
-
-	return;
-}
-
+/***************************************/
 
 int mainWindow() 
 {
@@ -124,21 +33,26 @@ int mainWindow()
     }
 
     //setup glfw
+	glfwWindowHint(GLFW_SAMPLES, 4);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
+
     //create window
     GLFWwindow* window = glfwCreateWindow(SCR_WIDTH, SCR_HEIGHT, "HNVCore", nullptr, nullptr);
-    glfwMakeContextCurrent( window );
 
-    // check if window
+	// check if window
     if (window == NULL)
     {
         std::cout << "Failed to create GLFW window" << std::endl;
         glfwTerminate();
         return -1;
     }
+
+    glfwMakeContextCurrent(window);
+	gladLoadGL();
+	glViewport(0, 0, 1080, 720);
 
     //glad: load all OpenGL function pointers
     if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
@@ -147,27 +61,62 @@ int mainWindow()
         return -1;
     }
     
-    double dt = 0.0;
+	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+
+	GLuint VertexArrayID;
+	glGenVertexArrays(1, &VertexArrayID);
+	glBindVertexArray(VertexArrayID);
+
+	GLuint programID = LoadShaders( "SimpleVertexShader.vertexshader", "SimpleFragmentShader.fragmentshader" );
+
+
+	// An array of 3 vectors which represents 3 vertices
+	static const GLfloat g_vertex_buffer_data[] = {
+		-1.0f, -1.0f, 0.0f,
+		1.0f, -1.0f, 0.0f,
+		0.0f,  1.0f, 0.0f,
+	};
+
+	// This will identify our vertex buffer
+	GLuint vertexbuffer;
+	// Generate 1 buffer, put the resulting identifier in vertexbuffer
+	glGenBuffers(1, &vertexbuffer);
+	// The following commands will talk about our 'vertexbuffer' buffer
+	glBindBuffer(GL_ARRAY_BUFFER, vertexbuffer);
+	// Give our vertices to OpenGL.
+	glBufferData(GL_ARRAY_BUFFER, sizeof(g_vertex_buffer_data), g_vertex_buffer_data, GL_STATIC_DRAW);
+
+
+	double dt = 0.0;
     double lastframe = 0.0;
     //update time
     dt = glfwGetTime() - lastframe;
     lastframe += dt;
     glfwWaitEventsTimeout(0.001);
 
-
     // Render loop
     while (!glfwWindowShouldClose(window))
     {
-
-        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
 		/* Render here */
-    	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-		//shader init:
+		glUseProgram(programID);
 
-		GLuint core_program;
-		loadShaders(core_program);
+		// 1rst attribute buffer : vertices
+		glEnableVertexAttribArray(0);
+		glBindBuffer(GL_ARRAY_BUFFER, vertexbuffer);
+		glVertexAttribPointer(
+			0,                  // attribute 0. No particular reason for 0, but must match the layout in the shader.
+			3,                  // size
+			GL_FLOAT,           // type
+			GL_FALSE,           // normalized?
+			0,                  // stride
+			(void*)0            // array buffer offset
+		);
+		// Draw the triangle !
+		glDrawArrays(GL_TRIANGLES, 0, 3); // Starting from vertex 0; 3 vertices total -> 1 triangle
+		glDisableVertexAttribArray(0);
+
 
         /* Swap front and back buffers */
         glfwSwapBuffers(window);
@@ -175,12 +124,11 @@ int mainWindow()
         glfwPollEvents();
         
     }
+
     glfwSwapInterval(1);
     //glfwSetInputMode();
 
     glfwTerminate();
-
-
     return 0;
 }
 
