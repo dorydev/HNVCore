@@ -20,3 +20,6 @@ target_include_directories(HNVCore
 
 target_link_libraries(HNVCore "${CMAKE_SOURCE_DIR}/lib/glfw/libglfw3dll.a")
 target_link_libraries(HNVCore "${CMAKE_SOURCE_DIR}/lib/glut/lib/libglut32.a")
+
+add_custom_command(TARGET HNVCore POST_BUILD COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_SOURCE_DIR}/src/shaders/ $<TARGET_FILE_DIR:${PROJECT_NAME}>/shaders/)
+add_custom_command(TARGET HNVCore POST_BUILD COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_SOURCE_DIR}/lib/glfw/glfw3.dll $<TARGET_FILE_DIR:${PROJECT_NAME}>)
