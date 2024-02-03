@@ -1,4 +1,4 @@
-/*#ifndef CAMERA_H
+#ifndef CAMERA_H
 #define CAMERA_H
 
 //include libs
@@ -12,23 +12,7 @@
 
 class OrbitalCamera
 {
-    public:
-
-        glm::vec3 Position;
-        glm::vec3 Orientation = glm::vec3(0.0f, 0.0f, -1.0f);   
-        glm::vec3 Up = glm::vec3(0.0f, 1.0f, 0.0f);
-
-        int width;
-        int height;
-
-        float speed = 0.1f;
-        float sensivity = 100.0f;
-
-        OrbitalCamera(int width, int height, glm::vec3 position);
-        void Matrix(float FOVdeg, float nearPlane, float farPlane, const char* uniform);
-        void Inputs(GLFWwindow* window);
-
-    private: 
+    
 };
 
-#endif*/
+#endif
