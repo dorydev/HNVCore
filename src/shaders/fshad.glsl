@@ -1,9 +1,8 @@
-#version 440 core
+#version 330 core
+in vec3 fragPos;
+out vec4 FragColor;
 
-in vec3 fragmentColor;
-
-out vec3 color;
-
-void main(){
-  color = fragmentColor;
+void main()
+{
+    FragColor = vec4(fragPos * 0.5 + 0.5, 1.0);
 }
