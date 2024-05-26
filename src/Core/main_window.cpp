@@ -12,6 +12,7 @@
 
 //external paths
 //#include "shader.cpp"
+//#include "camera.cpp"
 
 
 const char* vertexShaderSource = R"(
@@ -45,8 +46,8 @@ void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 void processInput(GLFWwindow* window);
 
 //GLOBAL variables
-const unsigned int SCR_WIDTH = 1080;
-const unsigned int SCR_HEIGHT = 720;
+const unsigned int SCR_WIDTH = 800;
+const unsigned int SCR_HEIGHT = 600;
 
 
 /***************************************/
@@ -81,7 +82,7 @@ int mainWindow()
 
     glfwMakeContextCurrent(window);
 	gladLoadGL();
-	glViewport(0, 0, 1080, 720);
+	glViewport(0, 0, 800, 600);
 
     //glad: load all OpenGL function pointers
     if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
@@ -108,8 +109,8 @@ int mainWindow()
     glDeleteShader(fragmentShader);
 
     // Sphere parameters
-    const int slices = 50;
-    const int stacks = 50;
+    const int slices = 100;
+    const int stacks = 100;
     const float radius = 1.0f;
 
     // Generate sphere vertices
@@ -164,6 +165,7 @@ int mainWindow()
         glm::mat4 model = glm::mat4(1.0f);
         glm::mat4 view = glm::lookAt(glm::vec3(0.0f, 0.0f, 3.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
         glm::mat4 projection = glm::perspective(glm::radians(45.0f), 800.0f / 600.0f, 0.1f, 100.0f);
+        glm::mat4 MVP = projection * view * model;
 
         GLint modelLoc = glGetUniformLocation(shaderProgram, "model");
         GLint viewLoc = glGetUniformLocation(shaderProgram, "view");

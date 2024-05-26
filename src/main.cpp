@@ -17,7 +17,7 @@
 #include <streambuf>
 
 #include <windows.h>
-#include <unistd.h>
+//#include <unistd.h>
 
 // include paths
 #include "Core/main_window.cpp"
@@ -26,7 +26,7 @@
 int main(void) 
 {
     std::cout << "Loading..." << std::endl;
-    sleep(1);
+    //sleep(1);
 
     //test vec 
 
