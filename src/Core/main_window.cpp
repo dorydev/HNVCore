@@ -151,8 +151,7 @@ int mainWindow()
 
     while (!glfwWindowShouldClose(window)) {
         // Process input
-        if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
-            glfwSetWindowShouldClose(window, true);
+        processInput(window);
 
         // Clear the buffer
         glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
@@ -196,7 +195,7 @@ int mainWindow()
 
 void processInput(GLFWwindow *window)
 {
-    if(glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
+    if(glfwGetKey(window, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS)
         glfwSetWindowShouldClose(window, true);
 }
 
